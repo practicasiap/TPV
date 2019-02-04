@@ -1,5 +1,6 @@
 package com.cifpvdg.cifpvirgendegracia.tpv.Escaner;
 
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -19,7 +20,13 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import java.util.List;
 
 public class Escaner extends AppCompatActivity{
-    
+    Bitmap bitmap;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);//El bitmap habria que sacarlo de la camara
+        scanBarcodes(image);
+    }
 
     private void scanBarcodes(FirebaseVisionImage image) {
         // [START set_detector_options]
