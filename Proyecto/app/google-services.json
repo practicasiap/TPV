@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "775387086605",
+    "firebase_url": "https://tpvdam2-9d43a.firebaseio.com",
+    "project_id": "tpvdam2-9d43a",
+    "storage_bucket": "tpvdam2-9d43a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775387086605:android:fcdbdfaedc45b7ac",
+        "android_client_info": {
+          "package_name": "com.cifpvdg.cifpvirgendegracia.tpv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775387086605-hra0mulnge8lbb5hc089oehlngponso9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEc-jLPWzSDRFGm2jgTho94H4t_0nCCR8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
