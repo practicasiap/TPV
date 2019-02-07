@@ -93,6 +93,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
 
             // Create camera preview
             camView = new CameraView(this, mCamera);
+
+            camView.setPadding(0,0,0,500);
             camView.setPreviewCallback(camCallback);
 
             // Add view to UI

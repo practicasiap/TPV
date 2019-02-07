@@ -54,7 +54,7 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         // Consider calculated size is overflow
-        /*int calculatedHeight = (int)(originalWidth * DISPLAY_HEIGHT / DISPLAY_WIDTH);
+        int calculatedHeight = (int)(originalWidth * DISPLAY_HEIGHT / DISPLAY_WIDTH);
         int finalWidth, finalHeight;
         if (calculatedHeight > originalHeight) {
             finalWidth = (int)(originalHeight * DISPLAY_WIDTH / DISPLAY_HEIGHT);
@@ -62,7 +62,7 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
         } else {
             finalWidth = (int) originalWidth;
             finalHeight = calculatedHeight;
-        }*/
+        }
 
         // Set new measures
         super.onMeasure(
@@ -114,6 +114,7 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
             if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
             }
+
 
             // Adapt parameters
             mCamera.setParameters(parameters);

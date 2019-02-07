@@ -30,10 +30,10 @@ public class OverlayView extends View {
             p.setStyle(Paint.Style.STROKE);
             p.setStrokeWidth(4.5f);
             canvas.drawRect(mRect, p);
-            mText="";
+
             if(mText != null) {
                 p.setTextSize(80);
-                canvas.drawText(mText, mRect.left, mRect.bottom+90, p);
+                canvas.drawText("", mRect.left, mRect.bottom+90, p);
             }
         }
     }
