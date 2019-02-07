@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">TPV</string>
+    <string name="captura">Capturar</string>
+    <string name="conf">Confirmar</string>
+
+    <!--Activity de Escaner de codigo-->
+        <!--Labels-->
+        <string name="lbl_codigo">Código de Barras:</string>
+        <string name="lbl_stock">Stock</string>
+        <string name="lbl_nombreProducto">Nombre Producto:</string>
+        <string name="lbl_actualizarStock">Actualizar Stock en la Base de Datos:</string>
+
+        <!--Buttons-->
+        <string name="btn_escanear">Escanear</string>
+        <string name="btn_añadir">Añadir</string>
+        <string name="btn_modificar">Modificar</string>
+        <string name="btn_borrar">Borrar</string>
 </resources>
