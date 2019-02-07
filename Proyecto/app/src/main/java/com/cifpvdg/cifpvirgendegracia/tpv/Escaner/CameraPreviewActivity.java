@@ -46,8 +46,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Full Screen
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // Fix orientation : portrait
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -55,9 +55,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
         // Set layout
         setContentView(R.layout.escaner_barra);
 
-        // Para forzar parar la actividad
-        /*
-        findViewById(R.id.btn_finish_preview).setOnClickListener(new View.OnClickListener() {
+        // Set ui button actions
+        /*findViewById(R.id.btn_finish_preview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CameraPreviewActivity.this.finish();
@@ -128,7 +127,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
         return c;
     }
 
-    /** Calcula el factor de escalado del overlay */
+    /** Calculate overlay scale factor */
     private Rect fitOverlayRect(Rect r) {
         if(overlayScale <= 0) {
             Camera.Size prevSize = camView.getPreviewSize();
@@ -153,6 +152,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
         /**
          * Event Listener for post processing
          *
+         * We'll set up the detector only for EAN-13 barcode format and ISBN barcode type.
+         * This OnBarcodeListener aims of notifying 'ISBN barcode is detected' to other class.
          */
         private OnBarcodeListener mBarcodeDetectedListener = null;
 
@@ -168,7 +169,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
             mImageWidth = imageWidth;
             mImageHeight = imageHeight;
 
-            
+            // set-up detector options for find EAN-13 format (commonly used 1-D barcode)
             options =new FirebaseVisionBarcodeDetectorOptions.Builder()
                     .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_ALL_FORMATS)//SOPORTA TODOS LOS FORMATOS
                     .build();
@@ -199,10 +200,10 @@ public class CameraPreviewActivity extends AppCompatActivity {
         @Override public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
             // Task completed successfully
             for (FirebaseVisionBarcode barcode: barcodes) {
-                
+                Log.d("Barcode", "value : "+barcode.getRawValue());
 
                 int valueType = barcode.getValueType();
-                Toast toast = Toast.makeText(getApplicationContext(),
+                Toast toast = Toast.makeText(getBaseContext(),
                         "Tipo: "+valueType+"Valor: "+barcode.getRawValue(),
                         Toast.LENGTH_SHORT);
 
