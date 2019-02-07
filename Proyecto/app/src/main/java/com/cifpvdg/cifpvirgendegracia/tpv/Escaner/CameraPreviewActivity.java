@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -38,9 +39,12 @@ public class CameraPreviewActivity extends AppCompatActivity {
     private OverlayView overlay;
     private double overlayScale = -1;
     FrameLayout preview;
+    Button btn_escanear;
+
     private interface OnBarcodeListener {
         void onBarcodeDetected(FirebaseVisionBarcode barcode);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +59,21 @@ public class CameraPreviewActivity extends AppCompatActivity {
         // Set layout
         setContentView(R.layout.escaner_barra);
 
-        // Set ui button actions
-        /*findViewById(R.id.btn_finish_preview).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CameraPreviewActivity.this.finish();
-            }
-        });*/
+        btn_escanear = (Button) findViewById(R.id.btn_escaner);
 
-        // Initialize Camera
+
+        btn_escanear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrancarCamara();
+            }
+        });
+        arrancarCamara();
+
+
+    }
+
+    private void arrancarCamara() {
         mCamera = getCameraInstance();
 
         // Set-up preview screen
@@ -143,6 +153,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
         public void setBarcodeDetectedListener(OnBarcodeListener mBarcodeDetectedListener) {
             this.mBarcodeDetectedListener = mBarcodeDetectedListener;
         }
+
+
 
         // ML Kit instances
         private FirebaseVisionBarcodeDetectorOptions options;
@@ -232,5 +244,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
             // Task failed with an exception
             Log.i("Barcode", "read fail");
         }
+
+
     }
 }
