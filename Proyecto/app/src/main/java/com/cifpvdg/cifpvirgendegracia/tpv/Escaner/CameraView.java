@@ -11,8 +11,8 @@ import java.util.List;
 /** Camera preview screen for portrait mode */
 public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
     // Camera configuration values
-    public static final int PREVIEW_WIDTH = 1280;
-    public static final int PREVIEW_HEIGHT = 720;
+    public static final int PREVIEW_WIDTH = 720;
+    public static final int PREVIEW_HEIGHT = 1280;
     public static final int SCREEN_ORIENTATION = 90;
 
     // Preview display parameters (by portrait mode)
@@ -46,15 +46,15 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
 
         // Switch width and height size for portrait preview screen.
         // Because the camera stream size always assume landscape size.
-        int DISPLAY_WIDTH = PREVIEW_HEIGHT;
-        int DISPLAY_HEIGHT = PREVIEW_WIDTH;
+        int DISPLAY_WIDTH = PREVIEW_WIDTH;
+        int DISPLAY_HEIGHT = PREVIEW_HEIGHT;
         if(mPreviewSize != null) {
-            DISPLAY_WIDTH = mPreviewSize.height;
-            DISPLAY_HEIGHT = mPreviewSize.width;
+            DISPLAY_WIDTH = mPreviewSize.width;
+            DISPLAY_HEIGHT = mPreviewSize.height;
         }
 
         // Consider calculated size is overflow
-        int calculatedHeight = (int)(originalWidth * DISPLAY_HEIGHT / DISPLAY_WIDTH);
+        int calculatedHeight = DISPLAY_HEIGHT;
         int finalWidth, finalHeight;
         if (calculatedHeight > originalHeight) {
             finalWidth = (int)(originalHeight * DISPLAY_WIDTH / DISPLAY_HEIGHT);
@@ -140,17 +140,17 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
     private Camera.Size findSuitablePreviewSize(List<Camera.Size> supportedPreviewSize) {
         Camera.Size previewSize = null;
 
-        double originalAspectRatio = (double)PREVIEW_WIDTH / (double)PREVIEW_HEIGHT;
+        double originalAspectRatio = (double)PREVIEW_HEIGHT / (double)PREVIEW_WIDTH;
         double lastFit = Double.MAX_VALUE, currentFit;
         for(Camera.Size s : supportedPreviewSize){
             if(s.width==PREVIEW_WIDTH && s.height==PREVIEW_HEIGHT){
                 previewSize = s;
                 break;
             } else if(previewSize == null) {
-                lastFit = Math.abs( ((double)s.width / (double)s.height) - originalAspectRatio);
+                lastFit = Math.abs( ((double)s.height / (double)s.width) - originalAspectRatio);
                 previewSize = s;
             } else {
-                currentFit = Math.abs( ((double)s.width / (double)s.height) - originalAspectRatio);
+                currentFit = Math.abs( ((double)s.height/ (double)s.width) - originalAspectRatio);
                 if( (currentFit <= lastFit) && (Math.abs(PREVIEW_WIDTH-s.width)<=Math.abs(PREVIEW_WIDTH-previewSize.width)) ) {
                     previewSize = s;
                     lastFit = currentFit;
