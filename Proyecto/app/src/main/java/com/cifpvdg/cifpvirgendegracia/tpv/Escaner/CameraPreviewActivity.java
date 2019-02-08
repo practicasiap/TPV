@@ -86,8 +86,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
             camCallback.setBarcodeDetectedListener(new OnBarcodeListener() {
                 @Override
                 public void onBarcodeDetected(FirebaseVisionBarcode barcode) {
-                    overlay.setOverlay(fitOverlayRect(barcode.getBoundingBox()), barcode.getRawValue());
-                    overlay.invalidate();
+                    //overlay.setOverlay(fitOverlayRect(barcode.getBoundingBox()), barcode.getRawValue());
+                    //overlay.invalidate();
                 }
             });
 
@@ -228,8 +228,10 @@ public class CameraPreviewActivity extends AppCompatActivity {
                 if (valueType == FirebaseVisionBarcode.TYPE_PRODUCT) {
                     mBarcodeDetectedListener.onBarcodeDetected(barcode);
                     mCamera.stopPreview();//PARAR LA ACTIVIDAD CUANDO ENCUENTRA EL PRODUCTO
+
                     try {
                         this.detector.close();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

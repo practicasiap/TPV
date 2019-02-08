@@ -11,8 +11,8 @@ import java.util.List;
 /** Camera preview screen for portrait mode */
 public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
     // Camera configuration values
-    public static final int PREVIEW_WIDTH = 1920;
-    public static final int PREVIEW_HEIGHT = 1080;
+    public static final int PREVIEW_WIDTH = 1280;
+    public static final int PREVIEW_HEIGHT = 720;
     public static final int SCREEN_ORIENTATION = 90;
 
     // Preview display parameters (by portrait mode)
@@ -66,8 +66,8 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
 
         // Set new measures
         super.onMeasure(
-                MeasureSpec.makeMeasureSpec(DISPLAY_WIDTH, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(DISPLAY_HEIGHT, MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec(finalWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(finalHeight, MeasureSpec.EXACTLY));
     }
 
     @Override
@@ -114,7 +114,6 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
             if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
             }
-
 
             // Adapt parameters
             mCamera.setParameters(parameters);

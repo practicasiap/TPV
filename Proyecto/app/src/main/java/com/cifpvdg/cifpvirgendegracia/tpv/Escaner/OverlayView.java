@@ -33,7 +33,7 @@ public class OverlayView extends View {
 
             if(mText != null) {
                 p.setTextSize(80);
-                canvas.drawText("", mRect.left, mRect.bottom+90, p);
+                canvas.drawText(mText, mRect.left, mRect.bottom+90, p);
             }
         }
     }
