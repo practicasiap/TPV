@@ -34,7 +34,7 @@ public class OverlayView extends View {
             if(mText != null) {
                 p.setTextSize(80);
                 canvas.drawText(mText, mRect.left, mRect.bottom+90, p);
-            }///Para mostrar el codigo en pantalla, es feo
+            }
         }
     }
 }
