@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.30" />
+        app:layout_constraintGuide_percent="0.34" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -35,17 +35,32 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/colorSecundaryLight"
             android:drawableLeft="@drawable/ic_center_focus_strong_black_24dp"
             android:text="@string/btn_escanear"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="148dp" />
-        <FrameLayout
-            android:id="@+id/frm_preview"
+
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/frm_preview"
+                android:layout_width="0dp"
+                android:layout_height="560dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </FrameLayout>
+        </android.support.constraint.ConstraintLayout>
+
     </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -56,6 +71,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="8dp"
+        android:textColorHint="@color/colorPrimaryDark"
         app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +83,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:enabled="false"
+            android:drawableLeft="@drawable/ic_free_breakfast_black_24dp"
+            android:drawableTint="@color/colorAccent"
             android:hint="@string/lbl_nombreProducto"
             android:inputType="text" />
 
@@ -81,6 +99,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="8dp"
+        android:textColorHint="@color/colorPrimaryDark"
         app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,6 +111,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:enabled="false"
+            android:drawableLeft="@drawable/ic_center_focus_strong_black_24dp"
+            android:drawableTint="@color/colorAccent"
             android:hint="@string/lbl_codigo"
             android:inputType="text" />
 
@@ -103,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_percent="0.64" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
@@ -117,21 +138,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.79" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.99" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.49" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -162,21 +183,23 @@
                 android:id="@+id/btn_sumarStock"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="40dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:background="@drawable/ic_add_black_24dp"
+                android:background="@drawable/ic_mas"
                 android:backgroundTint="@color/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/btn_restarStock"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="40dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:background="@drawable/ic_remove_black_24dp"
-                android:backgroundTint="@color/colorSecundary" />
+                android:background="@drawable/ic_menos"
+                android:backgroundTint="@color/colorPrimaryDark" />
         </LinearLayout>
     </LinearLayout>
 
@@ -201,7 +224,7 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_product_add_black_24dp"
+            android:drawableTop="@drawable/ic_file_add"
             android:text="@string/btn_añadir" />
 
         <Button
@@ -210,7 +233,7 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_product_add_black_24dp"
+            android:drawableTop="@drawable/ic_file_update"
             android:text="@string/btn_modificar" />
 
         <Button
@@ -224,32 +247,20 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/txt_stock"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:inputType="numberSigned"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-        app:layout_constraintTop_toTopOf="@+id/guideline2">
-
-        <TextView
-            android:id="@+id/lbl_stock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_stock" />
-
-        <EditText
-            android:id="@+id/txt_stock"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="numberSigned" />
-    </LinearLayout>
-
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
 </android.support.constraint.ConstraintLayout>
