@@ -28,6 +28,9 @@
         <activity
             android:name=".Escaner.CameraPreviewActivity" >
         </activity>
+        <activity
+            android:name=".RFoto.GestionFoto" >
+        </activity>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
