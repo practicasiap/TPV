@@ -1,9 +1,12 @@
 package com.cifpvdg.cifpvirgendegracia.tpv.Escaner;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,21 +15,21 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParser;
+import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserCodBarras;
+import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserDeleteParser;
+import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserUpdateStock;
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.Producto;
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.VolleySingleton;
 import com.cifpvdg.cifpvirgendegracia.tpv.R;
@@ -56,6 +59,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
     private EditText txt_stock;
     private TextInputLayout til_nombre;
     private TextInputLayout til_codigoBarras;
+    private TextInputLayout til_stock;
     private Button btn_crearProduc;
     private Button btn_actualizarProduc;
     private Button btn_borrarProduc;
@@ -70,12 +74,17 @@ public class CameraPreviewActivity extends AppCompatActivity {
     private Button btn_escanear;
 
     //Consulta sobre el codgio
-    private StringRequest stringRequest;
     private Producto producto;
     private static final String URLCODIGO = "https://tpvdam2.000webhostapp.com/selectCodBarras.php?";
     private static final String URLCODIGOUPDATE = "https://tpvdam2.000webhostapp.com/updateStock.php?";
     private static final String URLCODIGOBORRADO = "https://tpvdam2.000webhostapp.com/borrarProducto.php?";
-    private JSONObject a = null;
+    private ProgressBar progreBar;
+
+    //Drawable
+    private Drawable drawableCheck;
+    private Drawable drawableError;
+    private Drawable drawableStock;
+
 
     private interface OnBarcodeListener {
         void onBarcodeDetected(FirebaseVisionBarcode barcode);
@@ -92,9 +101,15 @@ public class CameraPreviewActivity extends AppCompatActivity {
         // Set layout
         setContentView(R.layout.escaner_barra);
 
+        this.drawableCheck = getDrawable(R.drawable.ic_check_black_24dp);
+        this.drawableError = getDrawable(R.drawable.ic_close_black_24dp);
+        this.drawableStock = getDrawable(R.drawable.ic_store_black_24dp);
+
+        this.progreBar = findViewById(R.id.progressBar);
         this.btn_escanear = findViewById(R.id.btn_escaner);
         this.til_nombre = findViewById(R.id.til_nombreProducto);
         this.til_codigoBarras = findViewById(R.id.til_codigoBarras);
+        this.til_stock = findViewById(R.id.til_stockProducto);
         this.txt_stock = findViewById(R.id.txt_stock);
 
         this.btn_crearProduc = findViewById(R.id.btn_añadir);
@@ -142,7 +157,8 @@ public class CameraPreviewActivity extends AppCompatActivity {
             }
         });
         arrancarCamara();
-        habilitarBotones(false, false, false, false, false);
+
+        limpiarCampos();
     }
 
     private void borrarProducto() {
@@ -152,33 +168,26 @@ public class CameraPreviewActivity extends AppCompatActivity {
         dialogo.setCancelable(false);
         dialogo.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo, int id) {
-                stringRequest = new StringRequest(Request.Method.POST, URLCODIGOBORRADO, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                progreBar.setVisibility(View.VISIBLE);
+                JSonParserDeleteParser js = new JSonParserDeleteParser(progreBar);
+                AsyncTask asyn = js.execute(URLCODIGOBORRADO, producto.getCod_barras());
 
-                        if (response.trim().equalsIgnoreCase("borrado")) {
-                            Toast.makeText(getApplicationContext(), "Se ha Borrado con exito", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Borrado fallido", Toast.LENGTH_SHORT).show();
-                        }
+                String respuesta = null;
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "No se ha podido conectar", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> parametros = new HashMap<>();
-                        parametros.put("cod_barras", producto.getCod_barras());
-                        return parametros;
-                    }
-                };
+                try {
+                    respuesta = (String) asyn.get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                VolleySingleton.getIntanciaVolley(getApplicationContext()).addToRequestQueue(stringRequest);
-                arrancarCamara();
+                if (respuesta.trim().contains("borrado")) {
+                    Toast.makeText(getApplicationContext(), "Se ha Borrado con exito", Toast.LENGTH_SHORT).show();
+                    limpiarCampos();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Borrado Fallido", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialogo.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -190,104 +199,58 @@ public class CameraPreviewActivity extends AppCompatActivity {
     }
 
     private void sumarStock() {
-        AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
-        dialogo.setTitle("Actualizar Stock");
-        dialogo.setMessage("¿Deseas aumentar el stock?");
-        dialogo.setCancelable(false);
-        dialogo.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo, int id) {
-                stringRequest = new StringRequest(Request.Method.POST, URLCODIGOUPDATE, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+        final int sumar = producto.getCantidad() + Integer.parseInt(txt_stock.getText().toString());
 
-                        if (response.trim().equalsIgnoreCase("actualiza")) {
-                            Toast.makeText(getApplicationContext(), "Se ha Actualizado con exito", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Actualizacion fallida", Toast.LENGTH_SHORT).show();
-                        }
+        progreBar.setVisibility(View.VISIBLE);
+        JSonParserUpdateStock js = new JSonParserUpdateStock(til_stock, drawableCheck, drawableError, drawableStock, progreBar, producto);
+        AsyncTask asyn = js.execute(URLCODIGOUPDATE, sumar);
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "No se ha podido conectar", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> parametros = new HashMap<>();
-                        int sumar = producto.getCantidad() + Integer.parseInt(txt_stock.getText().toString());
+        String respuesta = null;
 
-                        parametros.put("cod_barras", producto.getCod_barras());
-                        parametros.put("stock", String.valueOf(sumar));
-                        return parametros;
-                    }
-                };
+        try {
+            respuesta = (String) asyn.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-                VolleySingleton.getIntanciaVolley(getApplicationContext()).addToRequestQueue(stringRequest);
-                arrancarCamara();
-            }
-        });
-        dialogo.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo, int id) {
-
-            }
-        });
-        dialogo.show();
+        if (respuesta.trim().contains("actualiza")) {
+            Toast.makeText(getApplicationContext(), "Se ha Actualizado con exito", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Actualizado Fallido", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     private void restarStock() {
-        AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
-        dialogo.setTitle("Actualizar Stock");
-        dialogo.setMessage("¿Deseas disminuir el stock?");
-        dialogo.setCancelable(false);
-        dialogo.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo, int id) {
-                stringRequest = new StringRequest(Request.Method.POST, URLCODIGOUPDATE, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+        final int resta = producto.getCantidad() - Integer.parseInt(txt_stock.getText().toString());
 
-                        if (response.trim().equalsIgnoreCase("actualiza")) {
-                            Toast.makeText(getApplicationContext(), "Se ha Actualizado con exito", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Actualizacion fallida", Toast.LENGTH_SHORT).show();
-                        }
+        progreBar.setVisibility(View.VISIBLE);
+        JSonParserUpdateStock js = new JSonParserUpdateStock(til_stock, drawableCheck, drawableError, drawableStock, progreBar, producto);
+        AsyncTask asyn = js.execute(URLCODIGOUPDATE, resta);
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "No se ha podido conectar", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> parametros = new HashMap<>();
-                        int sumar = producto.getCantidad() - Integer.parseInt(txt_stock.getText().toString());
+        String respuesta = null;
 
-                        parametros.put("cod_barras", producto.getCod_barras());
-                        parametros.put("stock", String.valueOf(sumar));
-                        return parametros;
-                    }
-                };
+        try {
+            respuesta = (String) asyn.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-                VolleySingleton.getIntanciaVolley(getApplicationContext()).addToRequestQueue(stringRequest);
-                arrancarCamara();
-            }
-        });
-        dialogo.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo, int id) {
-
-            }
-        });
-        dialogo.show();
+        if (respuesta.trim().contains("actualiza")) {
+            Toast.makeText(getApplicationContext(), "Se ha Actualizado con exito", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Actualizado Fallido", Toast.LENGTH_SHORT).show();
+        }
     }
 
+
     private void arrancarCamara() {
-        habilitarBotones(false, false, false, false, false);
-        this.til_nombre.getEditText().setText("");
-        this.til_codigoBarras.getEditText().setText("");
-        this.txt_stock.setText("");
+        limpiarCampos();
+
         mCamera = getCameraInstance();
 
         // Set-up preview screen
@@ -452,36 +415,9 @@ public class CameraPreviewActivity extends AppCompatActivity {
 
                     producto = new Producto();
 
-                    JSonParser js = new JSonParser();
-                    AsyncTask p = js.execute(URLCODIGO, barcode.getRawValue());
-
-                    try {
-                        a = (JSONObject) p.get();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    til_codigoBarras.getEditText().setText(barcode.getDisplayValue());
-                    producto.setCod_barras(barcode.getDisplayValue());
-
-                    if (a != null) {
-                        til_nombre.getEditText().setText(a.optString("nombre"));
-                        producto.setCodigo(a.optInt("codigo"));
-                        producto.setNombre(a.optString("nombre"));
-                        producto.setCantidad(a.optInt("cantidad"));
-                        producto.setPrecio_compra(a.optDouble("precio_compra"));
-                        producto.setPrecio_compra(a.optDouble("precio_venta"));
-                        producto.setDescripcion_breve(a.optString("desc_breve"));
-                        producto.setDescripcion_breve(a.optString("desc_larga"));
-                        producto.setCod_pro_proveedero(a.optInt("cod_pro_proveedor"));
-                        producto.setSubactegoria(a.optInt("subcategoria"));
-
-                        habilitarBotones(false, true, true, true, true);
-                    } else {
-                        habilitarBotones(true, false, false, false, false);
-                    }
+                    progreBar.setVisibility(View.VISIBLE);
+                    JSonParserCodBarras js = new JSonParserCodBarras(til_nombre, til_stock, til_codigoBarras, btn_crearProduc, btn_actualizarProduc, btn_borrarProduc, btn_sumarStock, btn_restarStock, progreBar, producto);
+                    js.execute(URLCODIGO, barcode.getRawValue());
                 }
             }
         }
@@ -493,11 +429,17 @@ public class CameraPreviewActivity extends AppCompatActivity {
         }
     }
 
-    private void habilitarBotones(boolean crear, boolean update, boolean borrar, boolean sumar, boolean restar) {
-        this.btn_crearProduc.setEnabled(crear);
-        this.btn_actualizarProduc.setEnabled(update);
-        this.btn_borrarProduc.setEnabled(borrar);
-        this.btn_sumarStock.setEnabled(sumar);
-        this.btn_restarStock.setEnabled(restar);
+    private void limpiarCampos() {
+        this.btn_crearProduc.setEnabled(false);
+        this.btn_actualizarProduc.setEnabled(false);
+        this.btn_borrarProduc.setEnabled(false);
+        this.btn_sumarStock.setEnabled(false);
+        this.btn_restarStock.setEnabled(false);
+
+        this.til_stock.getEditText().setCompoundDrawablesWithIntrinsicBounds(drawableStock, null, null, null);
+        this.til_stock.getEditText().setText("");
+        this.til_nombre.getEditText().setText("");
+        this.til_codigoBarras.getEditText().setText("");
+        this.txt_stock.setText("");
     }
 }

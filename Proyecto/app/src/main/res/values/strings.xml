@@ -8,6 +8,7 @@
         <string name="lbl_codigo">Código de Barras:</string>
         <string name="lbl_stock">Stock</string>
         <string name="lbl_nombreProducto">Nombre Producto:</string>
+        <string name="lbl_stockProducto">Stock Actual:</string>
         <string name="lbl_actualizarStock">Actualizar Stock en la Base de Datos:</string>
 
         <!--Buttons-->
