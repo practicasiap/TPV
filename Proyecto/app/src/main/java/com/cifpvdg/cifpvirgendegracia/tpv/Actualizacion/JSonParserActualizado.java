@@ -16,12 +16,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by practicasiap on 11/12/2016.
- */
-
-
-public class JSonParser extends AsyncTask {
+public class JSonParserActualizado extends AsyncTask {
 
     static InputStream is = null;
     static JSONObject jObj = null;
@@ -46,7 +41,7 @@ public class JSonParser extends AsyncTask {
     private String descB;
 
     // constructor
-    public JSonParser(String nom, String subC, String codB, String codPro, String preC, String preV, String desc, String descB, String cant) {
+    public JSonParserActualizado(String nom, String subC, String codB, String codPro, String preC, String preV, String desc, String descB, String cant) {
         this.codBar = codB;
         this.nom = nom;
         this.subC = subC;

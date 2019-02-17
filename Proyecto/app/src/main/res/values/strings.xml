@@ -16,4 +16,21 @@
         <string name="btn_añadir">Añadir</string>
         <string name="btn_modificar">Modificar</string>
         <string name="btn_borrar">Borrar</string>
+
+    <string name="cod">Código:</string>
+    <string name="codProv">Cód.Proveedor:</string>
+    <string name="codBar">Cód.Barras:</string>
+    <string name="nombre">Nombre:</string>
+    <string name="preVen">Precio de venta:</string>
+    <string name="preCom">Precio de compra:</string>
+    <string name="cant">Cantidad:</string>
+    <string name="sub">Subcategoria:</string>
+    <string name="mas">+</string>
+    <string name="menos">-</string>
+    <string name="descB">Descripción breve:</string>
+    <string name="desc">Descripción:</string>
+    <string name="mandar">MANDAR</string>
+    <string name="mod">Modificar</string>
+    <string name="ania">Añadir</string>
+    <string name="foto">Video</string>
 </resources>

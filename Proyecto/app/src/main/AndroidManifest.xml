@@ -26,6 +26,10 @@
         </activity>
 
         <activity
+            android:name=".Actualizacion.ActualizadoActivity" >
+        </activity>
+
+        <activity
             android:name=".Escaner.CameraPreviewActivity" >
         </activity>
         <activity

@@ -2,6 +2,7 @@ package com.cifpvdg.cifpvirgendegracia.tpv.Escaner;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
@@ -27,12 +28,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.cifpvdg.cifpvirgendegracia.tpv.Actualizacion.ActualizadoActivity;
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserCodBarras;
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserDeleteParser;
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserUpdateStock;
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.Producto;
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.VolleySingleton;
-import com.cifpvdg.cifpvirgendegracia.tpv.R;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -44,6 +46,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,7 +161,28 @@ public class CameraPreviewActivity extends AppCompatActivity {
         });
         arrancarCamara();
 
+        btn_crearProduc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crearProducto();
+            }
+        });
+        btn_actualizarProduc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crearProducto();
+            }
+        });
+
         limpiarCampos();
+    }
+
+    private void crearProducto() {
+        Intent i = new Intent(this, ActualizadoActivity.class);
+
+        i.putExtra("prod", (Serializable) this.producto);
+
+        this.startActivity(i);
     }
 
     private void borrarProducto() {
