@@ -38,11 +38,16 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
     private String KEY_IMAGEN = "pifot";
     private String KEY_NOMBRE = "pid";
     int CAPTURA_IMAGEN_THUMBNAIL = 99,CAPTURA_IMAGEN_TAMAÑO_REAL=30;
+    String nombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent i = getIntent();
+        nombre = (String) i.getSerializableExtra("prod");
+
         btnBuscar = (Button)findViewById(R.id.bCaptura);
         btnSubir = (Button)findViewById(R.id.bCon);
         btnSubir.setEnabled(false);
@@ -86,7 +91,7 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
                 //Convertir bits a cadena
                 String imagen = getStringImagen(bitmap);
                 //Obtener el nombre de la imagen
-                String nombre = "25";
+                //String nombre = "25";
                 //Creación de parámetros
                 Map<String,String> params = new Hashtable<String, String>();
 

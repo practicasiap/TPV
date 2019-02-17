@@ -14,10 +14,12 @@ import android.widget.Toast;
 
 
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserDeleteParser;
+import com.cifpvdg.cifpvirgendegracia.tpv.RFoto.GestionFoto;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
 public class ActualizadoActivity extends AppCompatActivity {
@@ -84,7 +86,10 @@ public class ActualizadoActivity extends AppCompatActivity {
     }
 
     public void NuevaFoto(View view){
-
+        Intent i = new Intent(this, GestionFoto.class);
+        String cod = this.prod.getCodBarras()+"";
+        i.putExtra("prod", (Serializable) this.prod.getCodBarras());
+        this.startActivity(i);
     }
 
     public void NuevoVideo(View view){
