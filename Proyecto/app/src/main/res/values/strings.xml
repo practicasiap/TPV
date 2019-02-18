@@ -33,4 +33,6 @@
     <string name="mod">Modificar</string>
     <string name="ania">Añadir</string>
     <string name="foto">Video</string>
+    <string name="bGuardarVideo">Guardar</string>
+    <string name="bCapturarVideo">Capturar</string>
 </resources>
