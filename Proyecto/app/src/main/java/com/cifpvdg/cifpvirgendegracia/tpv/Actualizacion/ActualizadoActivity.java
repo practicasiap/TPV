@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserDeleteParser;
+import com.cifpvdg.cifpvirgendegracia.tpv.R;
 import com.cifpvdg.cifpvirgendegracia.tpv.RFoto.GestionFoto;
 import com.cifpvdg.cifpvirgendegracia.tpv.RVideo.CapturaVideo;
 

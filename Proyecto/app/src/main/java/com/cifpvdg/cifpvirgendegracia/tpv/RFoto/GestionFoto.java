@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import java.io.ByteArrayOutputStream;
+import com.cifpvdg.cifpvirgendegracia.tpv.R;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
