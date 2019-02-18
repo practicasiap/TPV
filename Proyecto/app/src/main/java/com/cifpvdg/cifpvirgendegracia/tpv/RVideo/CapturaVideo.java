@@ -49,7 +49,6 @@ public class CapturaVideo extends AppCompatActivity {
         this.guardar = (Button)findViewById(R.id.bGuardar);
         this.guardar.setEnabled(false);
         this.videoView = (VideoView)findViewById(R.id.vViewVideo);
-        this.textView = (TextView)findViewById(R.id.tvBase64);
         Intent i = this.getIntent();
         this.codBarras = (String) i.getSerializableExtra("prod");
 
