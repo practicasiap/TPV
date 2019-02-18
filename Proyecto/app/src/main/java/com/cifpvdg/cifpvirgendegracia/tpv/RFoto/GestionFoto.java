@@ -29,6 +29,11 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * Clase que se descarga y sube fotografia del servidor
+ * @author Joshua y Manuel
+ */
 public class GestionFoto extends AppCompatActivity implements View.OnClickListener{
     private Button btnBuscar;
     private Button btnSubir;
@@ -44,19 +49,21 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.capturafoto);
+        //Recupero los datos
         Intent i = getIntent();
         nombre = (String) i.getSerializableExtra("prod");
-
+        //Asigno los valores a las variables
         btnBuscar = (Button)findViewById(R.id.bCaptura);
         btnSubir = (Button)findViewById(R.id.bCon);
         btnSubir.setEnabled(false);
         imageView  = (ImageView) findViewById(R.id.imageView2);
         btnBuscar.setOnClickListener(this);
         btnSubir.setOnClickListener(this);
+        //metodo para recargar la fotografia
         //cargarFoto();
     }
+
     public String getStringImagen(Bitmap bmp){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -65,6 +72,9 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
         return encodedImage;
     }
 
+    /**
+     * Metodo encargado en subir la foto
+     */
     private void uploadImage(){
         //Mostrar el diálogo de progreso
         final ProgressDialog loading = ProgressDialog.show(this,"Subiendo...","Espere por favor...",false,false);
@@ -111,18 +121,21 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
     }
 
     private void showFileChooser() {
-        /*Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Imagen"), PICK_IMAGE_REQUEST);*/
+        //Creamos el intent de la foto y la guardamos en IMAGE
         Intent hacerFotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (hacerFotoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(hacerFotoIntent, CAPTURA_IMAGEN_THUMBNAIL);
-            //dispatchTakePictureIntent();
-            //galleryAddPic();
         }
     }
+
+    /**
+     * Paso la Foto a bitmat y lo inserto
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == CAPTURA_IMAGEN_THUMBNAIL && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
@@ -132,7 +145,7 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-
+        //Si pulsamos el boton buscar :
         if(v == btnBuscar){
             btnSubir.setEnabled(true);
             showFileChooser();
