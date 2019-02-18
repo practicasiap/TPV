@@ -2,6 +2,7 @@ package com.cifpvdg.cifpvirgendegracia.tpv.Actualizacion;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,17 +73,18 @@ public class JSonParserActualizado extends AsyncTask {
             connection.setDoOutput(true);
             connection.connect();
 
+
             //Establecemos los parámetros
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter(TAG_NOM, this.nom)
                     .appendQueryParameter(TAG_CANT, this.cant)
                     .appendQueryParameter(TAG_PREC, this.preC)
                     .appendQueryParameter(TAG_PREV, this.preV)
-                    .appendQueryParameter(TAG_CODBAR, this.codBar)
                     .appendQueryParameter(TAG_DESCB, this.descB)
                     .appendQueryParameter(TAG_DESC, this.desc)
                     .appendQueryParameter(TAG_CODPRO, this.codPro)
-                    .appendQueryParameter(TAG_SUBC, this.subC);
+                    .appendQueryParameter(TAG_SUBC, this.subC)
+                    .appendQueryParameter(TAG_CODBAR, this.codBar);
             String parametros = builder.build().getEncodedQuery();
 
             //Creamos un stream de salida y escribimos en él los parámetros POST
@@ -122,5 +124,10 @@ public class JSonParserActualizado extends AsyncTask {
 
         //Devolvemos el JSON
         return jObj;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+
     }
 }
