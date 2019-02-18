@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserDeleteParser;
 import com.cifpvdg.cifpvirgendegracia.tpv.RFoto.GestionFoto;
+import com.cifpvdg.cifpvirgendegracia.tpv.RVideo.CapturaVideo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,7 +94,10 @@ public class ActualizadoActivity extends AppCompatActivity {
     }
 
     public void NuevoVideo(View view){
-
+        Intent i = new Intent(this, CapturaVideo.class);
+        String cod = this.prod.getCodBarras()+"";
+        i.putExtra("prod", (Serializable) this.prod.getCodBarras());
+        this.startActivity(i);
     }
 
     public void sumar(View view){
