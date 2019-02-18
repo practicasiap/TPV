@@ -90,7 +90,7 @@ public class ActualizadoActivity extends AppCompatActivity {
     public void NuevaFoto(View view){
         Intent i = new Intent(this, GestionFoto.class);
         String cod = this.prod.getCodBarras()+"";
-        i.putExtra("prod", (Serializable) this.prod.getCodBarras());
+        i.putExtra("prod", cod);
         this.startActivity(i);
     }
 
