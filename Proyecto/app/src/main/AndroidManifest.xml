@@ -26,7 +26,14 @@
         </activity>
 
         <activity
+            android:name=".Actualizacion.ActualizadoActivity" >
+        </activity>
+
+        <activity
             android:name=".Escaner.CameraPreviewActivity" >
+        </activity>
+        <activity
+            android:name=".RFoto.GestionFoto" >
         </activity>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
