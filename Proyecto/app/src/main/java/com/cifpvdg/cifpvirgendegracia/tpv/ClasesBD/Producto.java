@@ -1,6 +1,8 @@
 package com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD;
 
-public class Producto {
+import java.io.Serializable;
+
+public class Producto implements Serializable{
     private int codigo;
     private String nombre;
     private int cantidad;
