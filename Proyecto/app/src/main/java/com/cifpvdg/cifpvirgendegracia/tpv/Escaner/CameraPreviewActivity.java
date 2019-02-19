@@ -180,7 +180,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
     private void crearProducto() {
         Intent i = new Intent(this, ActualizadoActivity.class);
 
-        i.putExtra("prod", (Serializable) this.producto);
+        i.putExtra("prod", this.producto);
 
         this.startActivity(i);
     }
@@ -442,6 +442,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
                     progreBar.setVisibility(View.VISIBLE);
                     JSonParserCodBarras js = new JSonParserCodBarras(til_nombre, til_stock, til_codigoBarras, btn_crearProduc, btn_actualizarProduc, btn_borrarProduc, btn_sumarStock, btn_restarStock, progreBar, producto);
                     js.execute(URLCODIGO, barcode.getRawValue());
+
                 }
             }
         }
