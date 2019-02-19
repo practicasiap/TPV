@@ -137,9 +137,9 @@ public class JSonParserCodBarras extends AsyncTask {
             producto.setNombre(jObj.optString("nombre"));
             producto.setCantidad(jObj.optInt("cantidad"));
             producto.setPrecio_compra(jObj.optDouble("precio_compra"));
-            producto.setPrecio_compra(jObj.optDouble("precio_venta"));
+            producto.setPrecio_venta(jObj.optDouble("precio_venta"));
             producto.setDescripcion_breve(jObj.optString("desc_breve"));
-            producto.setDescripcion_breve(jObj.optString("desc_larga"));
+            producto.setDescripcion_larga(jObj.optString("desc_larga"));
             producto.setCod_pro_proveedero(jObj.optInt("cod_pro_proveedor"));
             producto.setSubactegoria(jObj.optInt("subcategoria"));
 
