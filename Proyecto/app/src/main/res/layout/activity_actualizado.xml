@@ -11,12 +11,14 @@
         android:id="@+id/txtDesc"
         android:layout_width="357dp"
         android:layout_height="89dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorWhiteTransparent"
         android:ems="10"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/btnCambiante"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
@@ -57,10 +59,10 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCod" />
+        app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
 
     <EditText
-        android:id="@+id/txtCod"
+        android:id="@+id/txtNombre"
         android:layout_width="122dp"
         android:layout_height="20dp"
         android:layout_marginEnd="8dp"
@@ -69,15 +71,16 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/txtCod" />
 
     <EditText
-        android:id="@+id/txtNombre"
+        android:id="@+id/txtCod"
         android:layout_width="122dp"
         android:layout_height="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         android:background="@color/colorWhiteTransparent"
+        android:editable="false"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -164,20 +167,20 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="52dp"
         android:layout_marginTop="8dp"
-        android:text="@string/cod"
-        app:layout_constraintEnd_toStartOf="@+id/txtCod"
+        android:text="@string/nombre"
+        app:layout_constraintEnd_toStartOf="@+id/txtNombre"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_marginEnd="55dp"
+        android:layout_marginEnd="60dp"
         android:layout_marginTop="16dp"
-        android:text="@string/nombre"
-        app:layout_constraintEnd_toStartOf="@+id/txtNombre"
+        android:text="@string/cod"
+        app:layout_constraintEnd_toStartOf="@+id/txtCod"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
