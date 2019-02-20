@@ -15,6 +15,8 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.Producto;
 import com.cifpvdg.cifpvirgendegracia.tpv.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -40,17 +42,17 @@ public class CapturaVideo extends AppCompatActivity {
     private String UPLOAD_URL ="https://tpvdam2.000webhostapp.com/subirVideo.php";
     private MediaController mc;
     private Uri video;
-    private String codBarras;
+    private Producto producto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_capturavideo);
         this.guardar = (Button)findViewById(R.id.bGuardar);
         this.guardar.setEnabled(false);
         this.videoView = (VideoView)findViewById(R.id.vViewVideo);
         Intent i = this.getIntent();
-        this.codBarras = (String) i.getSerializableExtra("prod");
+        this.producto = (Producto) i.getSerializableExtra("prod");
 
         this.mc = new MediaController(this);
         this.mc.setAnchorView(this.videoView);
@@ -86,27 +88,29 @@ public class CapturaVideo extends AppCompatActivity {
                         @Override
                         public void onResponse(String s) {
                             loading.dismiss();
+                            Toast.makeText(CapturaVideo.this, "Video subido con éxito.", Toast.LENGTH_SHORT).show();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             loading.dismiss();
+                            Toast.makeText(CapturaVideo.this, "Error al subir el video.", Toast.LENGTH_SHORT).show();
                         }
                     }){
                 @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    String videoPath = getRealPathFromURI(video);
+                protected Map<String, String> getParams() {
+                    String codificado = obtenerCodificado();
                     Map<String,String> elmapa = new Hashtable<String, String>();
-
-                    elmapa.put("pivid", videoPath);
-                    elmapa.put("pid", codBarras);
-
+                    elmapa.put("video", codificado);
+                    elmapa.put("cba", producto.getCod_barras());
                     return elmapa;
                 }
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
+            System.out.println("---------------------------------------------------------------------------------------Request creada---------------------------------------------------------------");
             requestQueue.add(stringRequest);
+            System.out.println("---------------------------------------------------------------------------------------Request añadida---------------------------------------------------------------");
         }else{
             Toast.makeText(this, "No hay video para almacenar.", Toast.LENGTH_LONG).show();
         }
