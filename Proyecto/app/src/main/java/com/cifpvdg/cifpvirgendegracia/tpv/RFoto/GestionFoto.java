@@ -140,6 +140,7 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(bitmap);
+            btnSubir.setEnabled(true);
         }
     }
 
@@ -147,7 +148,6 @@ public class GestionFoto extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         //Si pulsamos el boton buscar :
         if(v == btnBuscar){
-            btnSubir.setEnabled(true);
             showFileChooser();
         }
 

@@ -277,12 +277,11 @@ public class CameraPreviewActivity extends AppCompatActivity {
 
         mCamera = getCameraInstance();
 
-        // Set-up preview screen
+
         if (mCamera != null) {
-            // Create overlay view
             overlay = new OverlayView(this);
 
-            // Create barcode processor for ISBN
+            // Crea al procesador del codigo de barras
             CustomPreviewCallback camCallback = new CustomPreviewCallback(CameraView.PREVIEW_WIDTH, CameraView.PREVIEW_HEIGHT);
             camCallback.setBarcodeDetectedListener(new OnBarcodeListener() {
                 @Override
@@ -292,13 +291,13 @@ public class CameraPreviewActivity extends AppCompatActivity {
                 }
             });
 
-            // Create camera preview
+            // Crea la view de la camara
             camView = new CameraView(this, mCamera);
 
             camView.setPadding(0, 0, 0, 500);
             camView.setPreviewCallback(camCallback);
 
-            // Add view to UI
+            // añade la view a la interfaz
             preview = findViewById(R.id.frm_preview);
             preview.addView(camView);
             preview.addView(overlay);
@@ -354,7 +353,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
     }
 
     /**
-     * Post-processor for preview image streams
+     * El post procesado de la foto
      */
     private class CustomPreviewCallback implements Camera.PreviewCallback, OnSuccessListener<List<FirebaseVisionBarcode>>, OnFailureListener {
 
@@ -368,12 +367,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
         private FirebaseVisionBarcodeDetector detector;
         private FirebaseVisionImageMetadata metadata;
 
-        /**
-         * Event Listener for post processing
-         * <p>
-         * We'll set up the detector only for EAN-13 barcode format and ISBN barcode type.
-         * This OnBarcodeListener aims of notifying 'ISBN barcode is detected' to other class.
-         */
+
         private OnBarcodeListener mBarcodeDetectedListener = null;
 
         /**
@@ -391,14 +385,13 @@ public class CameraPreviewActivity extends AppCompatActivity {
             mImageWidth = imageWidth;
             mImageHeight = imageHeight;
 
-            // set-up detector options for find EAN-13 format (commonly used 1-D barcode)
+            // Inicias el detector con todos los formatos
             options = new FirebaseVisionBarcodeDetectorOptions.Builder()
                     .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_ALL_FORMATS)//SOPORTA TODOS LOS FORMATOS
                     .build();
 
             detector = FirebaseVision.getInstance().getVisionBarcodeDetector(options);
 
-            // build detector
             metadata = new FirebaseVisionImageMetadata.Builder()
                     .setFormat(ImageFormat.NV21)
                     .setWidth(mImageWidth)
@@ -408,7 +401,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
         }
 
         /**
-         * Start detector if camera preview shows
+         * Inicia el detector si se muestra cosas
          */
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
@@ -422,7 +415,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
         }
 
         /**
-         * Barcode is detected successfully
+         * Cuando el codigo de barras es obtenido
          */
         @Override
         public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
@@ -449,7 +442,7 @@ public class CameraPreviewActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(@NonNull Exception e) {
-            // Task failed with an exception
+            // Task failed
             Log.i("Barcode", "read fail");
         }
     }

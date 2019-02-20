@@ -22,27 +22,27 @@ public class JSonParserActualizado extends AsyncTask {
     static InputStream is = null;
     static JSONObject jObj = null;
     static String json = "";
-    private static final String TAG_NOM = "nom";
-    private static final String TAG_SUBC = "subC";
-    private static final String TAG_CODBAR = "codBar";
-    private static final String TAG_CODPRO = "codPro";
-    private static final String TAG_PREC = "preC";
-    private static final String TAG_PREV = "preV";
-    private static final String TAG_DESC = "desc";
-    private static final String TAG_DESCB = "descB";
-    private static final String TAG_CANT = "cant";
+    private static final String TAG_NOM = "nombre";
+    private static final String TAG_SUBC = "subcategoria";
+    private static final String TAG_CODBAR = "cod_barras";
+    private static final String TAG_CODPRO = "cod_pro_proveedor";
+    private static final String TAG_PREC = "precio_compra";
+    private static final String TAG_PREV = "precio_venta";
+    private static final String TAG_DESC = "desc_breve";
+    private static final String TAG_DESCB = "desc_larga";
+    private static final String TAG_CANT = "cantidad";
     private String nom;
-    private String subC;
+    private int subC;
     private String codBar;
-    private String codPro;
-    private String preC;
-    private String preV;
-    private String cant;
+    private int codPro;
+    private double preC;
+    private double preV;
+    private int cant;
     private String desc;
     private String descB;
 
     // constructor
-    public JSonParserActualizado(String nom, String subC, String codB, String codPro, String preC, String preV, String desc, String descB, String cant) {
+    public JSonParserActualizado(String nom, int cant, double preC, double preV, String descB, String desc, int codPro, int subC, String codB) {
         this.codBar = codB;
         this.nom = nom;
         this.subC = subC;
@@ -77,14 +77,14 @@ public class JSonParserActualizado extends AsyncTask {
             //Establecemos los parámetros
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter(TAG_NOM, this.nom)
-                    .appendQueryParameter(TAG_CANT, this.cant)
-                    .appendQueryParameter(TAG_PREC, this.preC)
-                    .appendQueryParameter(TAG_PREV, this.preV)
+                    .appendQueryParameter(TAG_CANT, String.valueOf(this.cant))
+                    .appendQueryParameter(TAG_PREC, String.valueOf(this.preC))
+                    .appendQueryParameter(TAG_PREV, String.valueOf(this.preV))
                     .appendQueryParameter(TAG_DESCB, this.descB)
                     .appendQueryParameter(TAG_DESC, this.desc)
-                    .appendQueryParameter(TAG_CODPRO, this.codPro)
-                    .appendQueryParameter(TAG_SUBC, this.subC)
-                    .appendQueryParameter(TAG_CODBAR, this.codBar);
+                    .appendQueryParameter(TAG_CODPRO, String.valueOf(this.codPro))
+                    .appendQueryParameter(TAG_SUBC, String.valueOf(this.subC))
+                    .appendQueryParameter(TAG_CODBAR, String.valueOf(this.codBar));
             String parametros = builder.build().getEncodedQuery();
 
             //Creamos un stream de salida y escribimos en él los parámetros POST
@@ -108,7 +108,6 @@ public class JSonParserActualizado extends AsyncTask {
             //creamos un JSON a partir de la respuesta
             json = bufferRespuesta.toString();
             System.out.println(json);
-            jObj = new JSONObject(json);
 
             //Cerramos
             readerRespuesta.close();
@@ -118,16 +117,10 @@ public class JSonParserActualizado extends AsyncTask {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         //Devolvemos el JSON
-        return jObj;
+        return json;
     }
 
-    @Override
-    protected void onPostExecute(Object o) {
-
-    }
 }
