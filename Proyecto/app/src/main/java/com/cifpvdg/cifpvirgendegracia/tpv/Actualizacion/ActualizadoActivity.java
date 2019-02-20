@@ -1,9 +1,15 @@
 package com.cifpvdg.cifpvirgendegracia.tpv.Actualizacion;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -40,6 +46,9 @@ public class ActualizadoActivity extends AppCompatActivity {
 
     private static String url = "https://tpvdam2.000webhostapp.com/insert.php?";
     private static String url2 = "https://tpvdam2.000webhostapp.com/actualizarProducto.php?";
+
+    private static final String[] PERMISO_CAMARA = new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final int PERMISO_GARANTIZADO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +111,9 @@ public class ActualizadoActivity extends AppCompatActivity {
     }
 
     public void NuevoVideo(View view){
-        Intent i = new Intent(this, CapturaVideo.class);
-        i.putExtra("prod", this.prod);
-        this.startActivity(i);
+        if (this.isPermissionGranted()){
+            this.iniciarVideoActivity();
+        }
     }
 
     public void sumar(View view){
@@ -244,8 +253,38 @@ public class ActualizadoActivity extends AppCompatActivity {
                 this.codBarras.setText(this.prod.getCod_barras() + "");
             }
         }
-
-
     }
 
+    private boolean isPermissionGranted(){
+        int versionSDK = Build.VERSION.SDK_INT;
+        boolean retorno;
+        if (versionSDK >= Build.VERSION_CODES.M){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this, PERMISO_CAMARA, PERMISO_GARANTIZADO);
+                retorno =  false;
+            }else{
+                retorno = true;
+            }
+        }else{
+            retorno = true;
+        }
+
+        return retorno;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (PERMISO_GARANTIZADO == requestCode){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                this.iniciarVideoActivity();
+            }
+            return;
+        }
+    }
+
+    private void iniciarVideoActivity(){
+        Intent i = new Intent(this, CapturaVideo.class);
+        i.putExtra("prod", this.prod);
+        this.startActivity(i);
+    }
 }
