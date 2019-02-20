@@ -15,7 +15,7 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
+import com.cifpvdg.cifpvirgendegracia.tpv.R;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -49,7 +49,6 @@ public class CapturaVideo extends AppCompatActivity {
         this.guardar = (Button)findViewById(R.id.bGuardar);
         this.guardar.setEnabled(false);
         this.videoView = (VideoView)findViewById(R.id.vViewVideo);
-        this.textView = (TextView)findViewById(R.id.tvBase64);
         Intent i = this.getIntent();
         this.codBarras = (String) i.getSerializableExtra("prod");
 

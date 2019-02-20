@@ -1,6 +1,5 @@
 package com.cifpvdg.cifpvirgendegracia.tpv.Actualizacion;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,16 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.JSonParserDeleteParser;
+import com.cifpvdg.cifpvirgendegracia.tpv.ClasesBD.Producto;
+import com.cifpvdg.cifpvirgendegracia.tpv.R;
 import com.cifpvdg.cifpvirgendegracia.tpv.RFoto.GestionFoto;
+import com.cifpvdg.cifpvirgendegracia.tpv.RVideo.CapturaVideo;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
 public class ActualizadoActivity extends AppCompatActivity {
@@ -38,6 +36,7 @@ public class ActualizadoActivity extends AppCompatActivity {
     private EditText desc;
     private EditText descB;
     private EditText cantidad;
+    private TextView lblCod;
 
     private static String url = "https://tpvdam2.000webhostapp.com/insert.php?";
     private static String url2 = "https://tpvdam2.000webhostapp.com/actualizarProducto.php?";
@@ -51,25 +50,35 @@ public class ActualizadoActivity extends AppCompatActivity {
         cambiante = (Button) findViewById(R.id.btnCambiante);
         sumar = (Button) findViewById(R.id.btnMas);
         restar = (Button) findViewById(R.id.btnMenos);
+        lblCod = (TextView) findViewById(R.id.textView5);
 
         recuperarTexts();
         Intent i = getIntent();
         prod = (Producto) i.getSerializableExtra("prod");
 
+        System.out.println("--------------------------------------------------------------------------------------" + prod.getCodigo() + "-------------------------------------------------------------------------------------------------------------");
+
+
         if (this.prod.getCodigo() != 0) {
             this.cambiante.setText(R.string.mod);
             this.cambiante.setTag("mod");
+            this.cod.setVisibility(View.VISIBLE);
+            this.lblCod.setVisibility(View.VISIBLE);
             LeerProducto();
             Toast.makeText(getApplicationContext(), "El producto ya existe, puede modificarlo", Toast.LENGTH_SHORT).show();
         } else {
             if(this.prod.getCodigo() == 0){
                 this.cambiante.setText(R.string.ania);
                 this.cambiante.setTag("an");
+                this.cod.setVisibility(View.INVISIBLE);
+                this.lblCod.setVisibility(View.INVISIBLE);
                 LeerProducto();
 
             }
 
         }
+
+        System.out.println("--------------------------------------------------------------------------------------" + cambiante.getTag() + "-------------------------------------------------------------------------------------------------------------");
 
         cambiante.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,13 +96,15 @@ public class ActualizadoActivity extends AppCompatActivity {
 
     public void NuevaFoto(View view){
         Intent i = new Intent(this, GestionFoto.class);
-        String cod = this.prod.getCodBarras()+"";
-        i.putExtra("prod", (Serializable) this.prod.getCodBarras());
+        String cod = this.prod.getCod_barras()+"";
+        i.putExtra("prod", cod);
         this.startActivity(i);
     }
 
     public void NuevoVideo(View view){
-
+        Intent i = new Intent(this, CapturaVideo.class);
+        i.putExtra("prod", this.prod);
+        this.startActivity(i);
     }
 
     public void sumar(View view){
@@ -136,7 +147,7 @@ public class ActualizadoActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogo, int id) {
 
 
-                JSonParser js = new JSonParser(nombre.getText().toString(), cantidad.getText().toString(), preC.getText().toString(), preV.getText().toString(), codBarras.getText().toString(), descB.getText().toString(), desc.getText().toString(), codPro.getText().toString(), subCat.getText().toString());
+                JSonParser js = new JSonParser(nombre.getText().toString(), Integer.parseInt(cantidad.getText().toString()), Double.parseDouble(preC.getText().toString()), Double.parseDouble(preV.getText().toString()), codBarras.getText().toString(), descB.getText().toString(), desc.getText().toString(), Integer.parseInt(codPro.getText().toString()), Integer.parseInt(subCat.getText().toString()));
                 AsyncTask asyn = js.execute(url);
 
                 String respuesta = null;
@@ -148,6 +159,8 @@ public class ActualizadoActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                System.out.println("-------------------------------------------------------------------------" + respuesta + "--------------------------------------------------------------------------------------------------------------");
 
                 if (respuesta.trim().contains("insertado")) {
                     Toast.makeText(getApplicationContext(), "Se ha añadido con exito", Toast.LENGTH_SHORT).show();
@@ -174,21 +187,21 @@ public class ActualizadoActivity extends AppCompatActivity {
         dialogo.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo, int id) {
 
-
-                JSonParserActualizado js = new JSonParserActualizado(nombre.getText().toString(), cantidad.getText().toString(), preC.getText().toString(), preV.getText().toString(), codBarras.getText().toString(), descB.getText().toString(), desc.getText().toString(), codPro.getText().toString(), subCat.getText().toString());
+                JSonParserActualizado js = new JSonParserActualizado(nombre.getText().toString(), Integer.parseInt(cantidad.getText().toString()), Double.parseDouble(preC.getText().toString()), Double.parseDouble(preV.getText().toString()), descB.getText().toString(), desc.getText().toString(), Integer.parseInt(codPro.getText().toString()), Integer.parseInt(subCat.getText().toString()), codBarras.getText().toString());
                 AsyncTask asyn = js.execute(url2);
 
                 String respuesta = null;
 
                 try {
                     respuesta = (String) asyn.get();
+                    System.out.println("-----------------------------------------------" + respuesta + "-------------------------------------------------------------------");
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                if (respuesta.trim().contains("actualiza")) {
+                if (respuesta.trim().contains("actualizado")) {
                     Toast.makeText(getApplicationContext(), "Se ha modificado con exito", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Modificado Fallido", Toast.LENGTH_SHORT).show();
@@ -218,17 +231,17 @@ public class ActualizadoActivity extends AppCompatActivity {
         if(this.prod.getCodigo() != 0){
             this.nombre.setText(this.prod.getNombre());
             this.cod.setText(this.prod.getCodigo() + "");
-            this.codPro.setText(this.prod.getCodProdProvee() + "");
-            this.codBarras.setText(this.prod.getCodBarras() + "");
+            this.codPro.setText(this.prod.getCod_pro_proveedero() + "");
+            this.codBarras.setText(this.prod.getCod_barras() + "");
             this.cantidad.setText(this.prod.getCantidad() + "");
-            this.preC.setText(this.prod.getPrecioCompra() + "");
-            this.preV.setText(this.prod.getPrecioVenta() + "");
-            this.desc.setText(this.prod.getDescLarga());
-            this.descB.setText(this.prod.getDescBreve());
-            this.subCat.setText(this.prod.getSubCategoria() + "");
+            this.preC.setText(this.prod.getPrecio_compra() + "");
+            this.preV.setText(this.prod.getPrecio_venta() + "");
+            this.desc.setText(this.prod.getDescripcion_larga());
+            this.descB.setText(this.prod.getDescripcion_breve());
+            this.subCat.setText(this.prod.getSubactegoria() + "");
         }else{
             if(this.prod.getCodigo() == 0){
-                this.codBarras.setText(this.prod.getCodBarras() + "");
+                this.codBarras.setText(this.prod.getCod_barras() + "");
             }
         }
 
