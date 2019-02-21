@@ -31,9 +31,6 @@
         </activity>
 
         <activity
-            android:name=".Escaner.CameraPreviewActivity" >
-        </activity>
-        <activity
             android:name=".RFoto.GestionFoto" >
         </activity>
         <activity

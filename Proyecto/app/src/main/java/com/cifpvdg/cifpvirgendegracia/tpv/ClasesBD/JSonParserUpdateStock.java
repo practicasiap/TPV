@@ -5,13 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -98,7 +92,6 @@ public class JSonParserUpdateStock extends AsyncTask {
             //creamos un JSON a partir de la respuesta
 
             respuesta = bufferRespuesta.toString();
-
 
         } catch (IOException e) {
             e.printStackTrace();
