@@ -1,0 +1,9 @@
+alter table productos MODIFY cod_barras varchar(30) NOT NULL;
+
+alter table productos MODIFY cod_pro_proveedor int(20) NOT NULL;
+
+ALTER TABLE productos
+ADD COLUMN foto varchar(100) AFTER subcategoria;
+
+ALTER TABLE productos
+ADD COLUMN video varchar(100) AFTER subcategoria;

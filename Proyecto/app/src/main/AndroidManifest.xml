@@ -4,6 +4,7 @@
     package="com.cifpvdg.cifpvirgendegracia.tpv">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -26,7 +27,14 @@
         </activity>
 
         <activity
-            android:name=".Escaner.CameraPreviewActivity" >
+            android:name=".Actualizacion.ActualizadoActivity" >
+        </activity>
+
+        <activity
+            android:name=".RFoto.GestionFoto" >
+        </activity>
+        <activity
+            android:name=".RVideo.CapturaVideo">
         </activity>
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
