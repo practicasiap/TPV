@@ -10,15 +10,13 @@ import java.util.List;
 
 /** Camera preview screen for portrait mode */
 public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
-    // Camera configuration values
+    // Configuracion de tamaños para la camara
     public static final int PREVIEW_WIDTH = 1280;
     public static final int PREVIEW_HEIGHT = 720;
     public static final int SCREEN_ORIENTATION = 90;
-
-    // Preview display parameters (by portrait mode)
     private Camera.Size mPreviewSize = null;
 
-    // Instances
+    // Instancias
     private Camera mCamera;
     private Camera.PreviewCallback mPreviewCallback;
 
@@ -38,7 +36,7 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
         return mPreviewSize;
     }
 
-    /** Calculate preview size to fit output screen */
+    /** Calcula el tamaño de la vista para mostrarla correctamente */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         double originalWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -100,32 +98,30 @@ public class CameraView  extends SurfaceView implements SurfaceHolder.Callback{
             e.printStackTrace();
         }
         try{
-            // Start set-up camera configurations
+            // Iniciar la camara con sus propiedades
             Camera.Parameters parameters = mCamera.getParameters();
 
-            // Set image format
+            // Formato de la imagen
             parameters.setPreviewFormat(ImageFormat.NV21);
 
-            // Set preview size (find suitable size with configurations)
+            // Tamaño de la preview
             mPreviewSize = findSuitablePreviewSize(parameters.getSupportedPreviewSizes());
             parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 
-            // Set Auto-Focusing if is available.
+            // Enfoque automaticamente
             if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
             }
 
-            // Adapt parameters
             mCamera.setParameters(parameters);
 
-            // Set Screen-Mode portrait
+            // Modo portrait
             mCamera.setDisplayOrientation(SCREEN_ORIENTATION);
 
-            // Set preview callback
-            // When the preview updated, 'onPreviewFrame()' function is called.
+            // Iniciar el callback
             mCamera.setPreviewCallback(mPreviewCallback);
 
-            // Show preview images
+            // Iniciar el preview
             mCamera.startPreview();
         }catch(Exception e){
             e.printStackTrace();
