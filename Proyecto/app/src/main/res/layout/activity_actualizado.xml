@@ -49,7 +49,7 @@
         android:layout_marginTop="8dp"
         android:background="@color/colorWhiteTransparent"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCodBar" />
 
@@ -296,12 +296,12 @@
         android:id="@+id/txtSubCa"
         android:layout_width="93dp"
         android:layout_height="21dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="26dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
         android:background="@color/colorWhiteTransparent"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/txtCantidad"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
