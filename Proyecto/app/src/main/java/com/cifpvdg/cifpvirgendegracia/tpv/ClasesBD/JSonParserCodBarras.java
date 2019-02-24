@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 
 public class JSonParserCodBarras extends AsyncTask {
     //Layaouts
+    private EditText txt_stock;
     private TextInputLayout til_nombre;
     private TextInputLayout til_codigoBarras;
     private TextInputLayout til_stock;
@@ -42,10 +43,11 @@ public class JSonParserCodBarras extends AsyncTask {
     private ProgressBar progressBar;
 
     // constructor
-    public JSonParserCodBarras(TextInputLayout tilNo, TextInputLayout tilStock, TextInputLayout codBarras, Button crear, Button actualizar, Button borrar, Button sumar, Button restar, ProgressBar pg, Producto pro) {
+    public JSonParserCodBarras(TextInputLayout tilNo, TextInputLayout tilStock, TextInputLayout codBarras, EditText stock, Button crear, Button actualizar, Button borrar, Button sumar, Button restar, ProgressBar pg, Producto pro) {
         this.til_nombre = tilNo;
         this.til_stock = tilStock;
         this.til_codigoBarras = codBarras;
+        this.txt_stock = stock;
         this.btn_crearProduc = crear;
         this.btn_actualizarProduc = actualizar;
         this.btn_borrarProduc = borrar;
@@ -109,7 +111,7 @@ public class JSonParserCodBarras extends AsyncTask {
             if (!json.contains("success")) {
                 jObj = new JSONObject(json);
                 //Cerramos todo
-            }else{
+            } else {
                 jObj = null;
             }
 
@@ -132,6 +134,7 @@ public class JSonParserCodBarras extends AsyncTask {
         if (jObj != null) {
             til_nombre.getEditText().setText(jObj.optString("nombre"));
             til_stock.getEditText().setText(String.valueOf(jObj.optString("cantidad")));
+            this.txt_stock.setText("1");
 
             producto.setCodigo(jObj.optInt("codigo"));
             producto.setNombre(jObj.optString("nombre"));
@@ -147,8 +150,6 @@ public class JSonParserCodBarras extends AsyncTask {
         } else {
             habilitarBotones(true, false, false, false, false);
         }
-
-        this.progressBar.setVisibility(View.GONE);
     }
 
     private void habilitarBotones(boolean crear, boolean update, boolean borrar, boolean sumar, boolean restar) {
@@ -157,5 +158,6 @@ public class JSonParserCodBarras extends AsyncTask {
         this.btn_borrarProduc.setEnabled(borrar);
         this.btn_sumarStock.setEnabled(sumar);
         this.btn_restarStock.setEnabled(restar);
+        this.progressBar.setVisibility(View.GONE);
     }
 }

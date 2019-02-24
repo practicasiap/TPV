@@ -45,26 +45,29 @@ public class ActualizadoActivity extends AppCompatActivity {
     private EditText descB;
     private EditText cantidad;
     private TextView lblCod;
-    private boolean salNom=false;
-    private boolean salCodPro=false;
-    private boolean salPreC=false;
-    private boolean salPreV=false;
-    private boolean salSubcat=false;
-    private boolean salDesc=false;
-    private boolean salDescB=false;
-    private boolean salCantidad=false;
+    private boolean salNom = false;
+    private boolean salCodPro = false;
+    private boolean salPreC = false;
+    private boolean salPreV = false;
+    private boolean salSubcat = false;
+    private boolean salDesc = false;
+    private boolean salDescB = false;
+    private boolean salCantidad = false;
 
 
     private static String url = "https://tpvdam2.000webhostapp.com/insert.php?";
     private static String url2 = "https://tpvdam2.000webhostapp.com/actualizarProducto.php?";
 
-    private static final String[] PERMISO_CAMARA = new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE};
+    private static final String[] PERMISO_CAMARA = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int PERMISO_GARANTIZADO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actualizado);
+
+        Intent i = getIntent();
+        prod = (Producto) i.getSerializableExtra("prod");
 
         cambiante = (Button) findViewById(R.id.btnCambiante);
         sumar = (Button) findViewById(R.id.btnMas);
@@ -89,10 +92,10 @@ public class ActualizadoActivity extends AppCompatActivity {
 
             public void afterTextChanged(Editable s) {
 
-                if(nombre.getText().toString().length() == 0){
-                    salNom=false;
-                }else{
-                    salNom=true;
+                if (nombre.getText().toString().length() == 0) {
+                    salNom = false;
+                } else {
+                    salNom = true;
                 }
                 comprobarTodos();
 
@@ -102,17 +105,18 @@ public class ActualizadoActivity extends AppCompatActivity {
         codPro.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if(codPro.getText().toString().length() == 0){
-                    salCodPro=false;
+                if (codPro.getText().toString().length() == 0) {
+                    salCodPro = false;
 
-                }else{
-                    salCodPro=true;
+                } else {
+                    salCodPro = true;
 
                 }
                 comprobarTodos();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -120,17 +124,18 @@ public class ActualizadoActivity extends AppCompatActivity {
         cantidad.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if(cantidad.getText().toString().length() == 0){
-                    salCantidad=false;
+                if (cantidad.getText().toString().length() == 0) {
+                    salCantidad = false;
 
-                }else{
-                    salCantidad=true;
+                } else {
+                    salCantidad = true;
 
                 }
                 comprobarTodos();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -138,17 +143,18 @@ public class ActualizadoActivity extends AppCompatActivity {
         preV.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if(preV.getText().toString().length() == 0){
-                    salPreV=false;
+                if (preV.getText().toString().length() == 0) {
+                    salPreV = false;
 
-                }else{
-                    salPreV=true;
+                } else {
+                    salPreV = true;
 
                 }
                 comprobarTodos();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -156,15 +162,16 @@ public class ActualizadoActivity extends AppCompatActivity {
         preC.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if(preC.getText().toString().length() == 0){
-                    salPreC=false;
-                }else{
-                    salPreC=true;
+                if (preC.getText().toString().length() == 0) {
+                    salPreC = false;
+                } else {
+                    salPreC = true;
                 }
                 comprobarTodos();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -172,15 +179,16 @@ public class ActualizadoActivity extends AppCompatActivity {
         subCat.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if(subCat.getText().toString().length() == 0){
-                    salSubcat=false;
-                }else{
-                    salSubcat=true;
+                if (subCat.getText().toString().length() == 0) {
+                    salSubcat = false;
+                } else {
+                    salSubcat = true;
                 }
                 comprobarTodos();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -188,15 +196,16 @@ public class ActualizadoActivity extends AppCompatActivity {
         descB.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if(descB.getText().toString().length() == 0){
-                    salDescB=false;
-                }else{
-                    salDescB=true;
+                if (descB.getText().toString().length() == 0) {
+                    salDescB = false;
+                } else {
+                    salDescB = true;
                 }
                 comprobarTodos();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -204,29 +213,20 @@ public class ActualizadoActivity extends AppCompatActivity {
         desc.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if(desc.getText().toString().length() == 0){
-                    salDesc=false;
-                }else{
-                    salDesc=true;
+                if (desc.getText().toString().length() == 0) {
+                    salDesc = false;
+                } else {
+                    salDesc = true;
                 }
                 comprobarTodos();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-
-
-
-
-
-        Intent i = getIntent();
-        prod = (Producto) i.getSerializableExtra("prod");
-
-        System.out.println("--------------------------------------------------------------------------------------" + prod.getCodigo() + "-------------------------------------------------------------------------------------------------------------");
-
 
         if (this.prod.getCodigo() != 0) {
             this.cambiante.setText(R.string.mod);
@@ -236,7 +236,7 @@ public class ActualizadoActivity extends AppCompatActivity {
             LeerProducto();
             Toast.makeText(getApplicationContext(), "El producto ya existe, puede modificarlo", Toast.LENGTH_SHORT).show();
         } else {
-            if(this.prod.getCodigo() == 0){
+            if (this.prod.getCodigo() == 0) {
                 this.cambiante.setText(R.string.ania);
                 this.cambiante.setTag("an");
                 this.cod.setVisibility(View.INVISIBLE);
@@ -246,16 +246,14 @@ public class ActualizadoActivity extends AppCompatActivity {
             }
         }
 
-        System.out.println("--------------------------------------------------------------------------------------" + cambiante.getTag() + "-------------------------------------------------------------------------------------------------------------");
-
         cambiante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getTag() == "mod"){
+                if (v.getTag() == "mod") {
 
                     ModificarProducto(null);
-                }else{
-                    if(v.getTag() == "an"){
+                } else {
+                    if (v.getTag() == "an") {
                         InsertarProdcuto(null);
                     }
                 }
@@ -264,16 +262,18 @@ public class ActualizadoActivity extends AppCompatActivity {
 
 
     }
-    public void comprobarTodos(){
-        if((salNom==false)||(salCantidad==false)||(salCodPro==false)||(salSubcat==false)||(salPreC==false)||(salPreV==false)||(salDesc==false)||(salDescB==false)){
+
+    public void comprobarTodos() {
+        if ((salNom == false) || (salCantidad == false) || (salCodPro == false) || (salSubcat == false) || (salPreC == false) || (salPreV == false) || (salDesc == false) || (salDescB == false)) {
             desactivarBoton();
-        }else{
-            if((salNom==true)&&(salCantidad==true)&&(salCodPro==true)&&(salSubcat==true)&&(salPreC==true)&&(salPreV==true)&&(salDesc==true)&&(salDescB==true)){
+        } else {
+            if ((salNom == true) && (salCantidad == true) && (salCodPro == true) && (salSubcat == true) && (salPreC == true) && (salPreV == true) && (salDesc == true) && (salDescB == true)) {
                 activarBoton();
             }
 
         }
     }
+
     private void activarBoton() {
         this.cambiante.setEnabled(true);
     }
@@ -282,43 +282,43 @@ public class ActualizadoActivity extends AppCompatActivity {
         this.cambiante.setEnabled(false);
     }
 
-    public void NuevaFoto(View view){
+    public void NuevaFoto(View view) {
         Intent i = new Intent(this, GestionFoto.class);
-        String cod = this.prod.getCod_barras()+"";
+        String cod = this.prod.getCod_barras() + "";
         i.putExtra("prod", cod);
         this.startActivity(i);
     }
 
-    public void NuevoVideo(View view){
-        if (this.isPermissionGranted()){
+    public void NuevoVideo(View view) {
+        if (this.isPermissionGranted()) {
             this.iniciarVideoActivity();
         }
     }
 
-    public void sumar(View view){
+    public void sumar(View view) {
         String number = this.cantidad.getText().toString();
         int num;
 
         number = number.trim();
 
-        if(number == ""){
+        if (number == "") {
             Toast.makeText(getApplicationContext(), "Por favor introduzca un valor", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             num = Integer.parseInt(number);
             num++;
             this.cantidad.setText(num + "");
         }
     }
 
-    public void restar(View view){
+    public void restar(View view) {
         String number = this.cantidad.getText().toString();
         int num;
 
         number = number.trim();
 
-        if(number == ""){
+        if (number == "") {
             Toast.makeText(getApplicationContext(), "Por favor introduzca un valor", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             num = Integer.parseInt(number);
             num--;
             this.cantidad.setText(num + "");
@@ -414,9 +414,9 @@ public class ActualizadoActivity extends AppCompatActivity {
         cantidad = (EditText) findViewById(R.id.txtCantidad);
     }
 
-    public void  LeerProducto() {
+    public void LeerProducto() {
 
-        if(this.prod.getCodigo() != 0){
+        if (this.prod.getCodigo() != 0) {
             this.nombre.setText(this.prod.getNombre());
             this.cod.setText(this.prod.getCodigo() + "");
             this.codPro.setText(this.prod.getCod_pro_proveedero() + "");
@@ -427,24 +427,24 @@ public class ActualizadoActivity extends AppCompatActivity {
             this.desc.setText(this.prod.getDescripcion_larga());
             this.descB.setText(this.prod.getDescripcion_breve());
             this.subCat.setText(this.prod.getSubactegoria() + "");
-        }else{
-            if(this.prod.getCodigo() == 0){
+        } else {
+            if (this.prod.getCodigo() == 0) {
                 this.codBarras.setText(this.prod.getCod_barras() + "");
             }
         }
     }
 
-    private boolean isPermissionGranted(){
+    private boolean isPermissionGranted() {
         int versionSDK = Build.VERSION.SDK_INT;
         boolean retorno;
-        if (versionSDK >= Build.VERSION_CODES.M){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+        if (versionSDK >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, PERMISO_CAMARA, PERMISO_GARANTIZADO);
-                retorno =  false;
-            }else{
+                retorno = false;
+            } else {
                 retorno = true;
             }
-        }else{
+        } else {
             retorno = true;
         }
 
@@ -453,15 +453,15 @@ public class ActualizadoActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (PERMISO_GARANTIZADO == requestCode){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (PERMISO_GARANTIZADO == requestCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 this.iniciarVideoActivity();
             }
             return;
         }
     }
 
-    private void iniciarVideoActivity(){
+    private void iniciarVideoActivity() {
         Intent i = new Intent(this, CapturaVideo.class);
         i.putExtra("prod", this.prod);
         this.startActivity(i);

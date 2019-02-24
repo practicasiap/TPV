@@ -9,6 +9,8 @@ import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_escanear;
 
     //Consulta sobre el codgio
+    private boolean escaneado;
     private Producto producto;
     private static final String URLCODIGO = "https://tpvdam2.000webhostapp.com/selectCodBarras.php?";
     private static final String URLCODIGOUPDATE = "https://tpvdam2.000webhostapp.com/updateStock.php?";
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] REQUEST_PERMISSIONS = new String[]{Manifest.permission.CAMERA};
     // Permission Request Code
     private int RESULT_PERMISSIONS = 0x9000;
+    private int RESULT_PERMISSIONS_INTERNET = 0x9001;
 
     private interface OnBarcodeListener {
         void onBarcodeDetected(FirebaseVisionBarcode barcode);
@@ -121,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         btn_escanear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPermissionGranted()) arrancarCamara();
+                if (isPermissionGranted(RESULT_PERMISSIONS)) arrancarCamara();
             }
         });
         btn_sumarStock.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (isPermissionGranted()) arrancarCamara();
+        if (isPermissionGranted(RESULT_PERMISSIONS)) arrancarCamara();
 
         limpiarCampos();
     }
@@ -248,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         int resta = producto.getCantidad() - Integer.parseInt(txt_stock.getText().toString());
 
         progreBar.setVisibility(View.VISIBLE);
-        
+
         JSonParserUpdateStock js = new JSonParserUpdateStock(til_stock, drawableCheck, drawableError, drawableStock, progreBar, producto);
         AsyncTask asyn = js.execute(URLCODIGOUPDATE, resta);
 
@@ -272,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void arrancarCamara() {
         limpiarCampos();
+        this.escaneado = true;
 
         mCamera = getCameraInstance();
 
@@ -425,14 +431,27 @@ public class MainActivity extends AppCompatActivity {
 
                 //Si el codigo escaneado es de tipo producto
                 if (valueType == FirebaseVisionBarcode.TYPE_PRODUCT) {
-                    mBarcodeDetectedListener.onBarcodeDetected(barcode);
-                    mCamera.stopPreview();//PARAR LA ACTIVIDAD CUANDO ENCUENTRA EL PRODUCTO
+                    if (escaneado) {
+                        escaneado = false;
+                        if (isPermissionGranted(RESULT_PERMISSIONS_INTERNET)) {
+                            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
+                            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-                    producto = new Producto();
+                            if (networkInfo != null && networkInfo.isConnected()) {
+                                mBarcodeDetectedListener.onBarcodeDetected(barcode);
+                                mCamera.stopPreview();//PARAR LA ACTIVIDAD CUANDO ENCUENTRA EL PRODUCTO
 
-                    progreBar.setVisibility(View.VISIBLE);
-                    JSonParserCodBarras js = new JSonParserCodBarras(til_nombre, til_stock, til_codigoBarras, btn_crearProduc, btn_actualizarProduc, btn_borrarProduc, btn_sumarStock, btn_restarStock, progreBar, producto);
-                    js.execute(URLCODIGO, barcode.getRawValue());
+                                producto = new Producto();
+
+                                progreBar.setVisibility(View.VISIBLE);
+                                JSonParserCodBarras js = new JSonParserCodBarras(til_nombre, til_stock, til_codigoBarras, txt_stock, btn_crearProduc, btn_actualizarProduc, btn_borrarProduc, btn_sumarStock, btn_restarStock, progreBar, producto);
+                                js.execute(URLCODIGO, barcode.getRawValue());
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Se necesita acceso a internet", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }
 
                 }
             }
@@ -464,10 +483,19 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0x9000:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    arrancarCamara();
+                }
+            case 0x9001:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    arrancarCamara();
+                }
+        }
+
         if (RESULT_PERMISSIONS == requestCode) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                arrancarCamara();
-            }
+
             return;
         }
     }
@@ -475,19 +503,32 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Request permission and check
      */
-    private boolean isPermissionGranted() {
+    private boolean isPermissionGranted(int permiso) {
+        boolean devolver = true;
         int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion >= Build.VERSION_CODES.M) {
-            //Android6.0(Marshmallow)
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(MainActivity.this, REQUEST_PERMISSIONS, RESULT_PERMISSIONS);
-                return false;
-            } else {
-                return true;
+            switch (permiso) {
+                case 0x9000:
+                    //Android6.0(Marshmallow)
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(MainActivity.this, REQUEST_PERMISSIONS, RESULT_PERMISSIONS);
+                        devolver = false;
+                    } else {
+                        devolver = true;
+                    }
+
+                case 0x9001:
+                    //Android6.0(Marshmallow)
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(MainActivity.this, REQUEST_PERMISSIONS, RESULT_PERMISSIONS_INTERNET);
+                        devolver = false;
+                    } else {
+                        devolver = true;
+                    }
             }
-        } else {
-            //Android6.0(Marshmallow)
-            return true;
+
         }
+
+        return devolver;
     }
 }
